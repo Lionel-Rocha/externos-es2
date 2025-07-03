@@ -41,5 +41,35 @@ Then('o status do cartão deve ser {string}', async function (status){
 Given('que o token de autenticação foi gerado', async function () {
     this.token = await paymentClient.obterToken();
     this.client = await paymentClient.client();
-    console.log(this.client);
+});
+
+When('a função de cobrança é erroneamente chamada com userId {string} e amount {int}', async function (userId, amount) {
+    try{
+        this.response = await paymentUtils.createBill(userId, amount);
+    }catch(err){
+        this.response = err;
+    }
+});
+
+Then('deve retornar um erro informando que o valor da cobrança é inválido', function () {
+    let error = this.response;
+    assert.equal(error, 'Error: Error creating bills: The requested action could not be performed, semantically incorrect, or failed business validation.');
+});
+
+Then('deve retornar um erro informando que o usuário não foi encontrado', function () {
+    assert.equal(this.response, 'Error: User not found or no bills available');
+});
+When('a função payment é erroneamente chamada com userId {string}', async function (userId) {
+    try{
+        this.response = await paymentUtils.payBill(userId);
+    }catch(err){
+        this.response = err;
+    }
+});
+Then('deve retornar um erro informando que a cobrança já foi paga', function () {
+    assert.equal(this.response, 'Error: Cobrança já foi paga ou cancelada');
+});
+
+Then('deve retornar erro de cartão inválido', function () {
+    assert.equal(this.response, 'INVALID');
 });

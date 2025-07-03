@@ -64,7 +64,7 @@ async function createBill(userId, amount, requestedTime){
     });
 
     const data = await response.json();
-    console.log(data);
+
     if (!response.ok) throw new Error(`Error creating bills: ${data.message}`);
 
     const bills = loadBills();
@@ -98,6 +98,11 @@ async function payBill(userId){
     const accessToken = await obterToken();
     const bills = loadBills();
     let userBills = bills[userId];
+
+    if (userBills === undefined) {
+        throw new Error("User not found or no bills available");
+    }
+
     let latestBill = userBills[userBills.length - 1];
     let user = userData.users.find(u => u.userId === userId);
 
