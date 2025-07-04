@@ -11,26 +11,39 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Enviar o e-mail
-async function sendMail(email, subject, message) {
-    const mailOptions = {
-        from: 'Bicicletário amigo <bicicletarioamigo@zohomail.com>',
-        to: email,
-        subject: subject,
-        text: message,
-    };
+function validateMail(email){
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent:", info.messageId);
-        return info.messageId;
-    } catch (error) {
-        console.error("Error sending email: ", error);
-        throw new Error("Failed to send email: " + error.message);
-    }
 }
 
-// Exemplo de uso
+// Enviar o e-mail
+async function sendMail(email, subject, message) {
+
+    let isValidEmail = validateMail(email);
+
+    if (isValidEmail){
+        const mailOptions = {
+            from: 'Bicicletário amigo <bicicletarioamigo@zohomail.com>',
+            to: email,
+            subject: subject,
+            text: message,
+        };
+
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Email sent:", info.messageId);
+            return info.messageId;
+        } catch (error) {
+            console.error("Error sending email: ", error);
+            throw new Error("Failed to send email: " + error.message);
+        }
+    } else {
+        throw new Error("Invalid email address: " + email);
+    }
+
+
+}
 
 
 module.exports = { sendMail };

@@ -47,6 +47,18 @@ router.post('/processaCobrancasEmFila', async (req, res) => {
 
 });
 
+router.post('/filaCobranca', async (req, res) => {
+    let {value, userId} = req.body;
+    const now = new Date();
+    const requestedTime = now.toLocaleString('pt-BR');
+
+    try {
+        await paymentMethods.createBill(userId, value, requestedTime);
+    } catch (e) {
+        return res.status(500).send("Internal Server Error: " + e.message);
+    }
+});
+
 router.get('/cobranca/:billId', async (req, res) => {
     const billId = req.params.billId;
 
