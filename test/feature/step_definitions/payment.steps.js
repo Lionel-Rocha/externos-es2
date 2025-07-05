@@ -1,7 +1,7 @@
 const { When, Then, Given, setDefaultTimeout} = require('@cucumber/cucumber');
 const {assert} = require('chai');
-const paymentUtils = require('../../../utils/paymentMethods');
-const paymentClient = require('../../../utils/paymentClient');
+const paymentUtils = require('../../../services/paymentMethods');
+const paymentClient = require('../../../middlewares/paymentClient');
 const verifyCard = require('../../../utils/verifyCreditCard');
 // Certifique-se que app.js exporta o app
 

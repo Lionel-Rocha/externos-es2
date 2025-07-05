@@ -1,5 +1,5 @@
 
-const {obterToken} = require("./paymentClient");
+const {obterToken} = require("../middlewares/paymentClient");
 const fetch = require("node-fetch");
 const crypto = require("crypto");
 

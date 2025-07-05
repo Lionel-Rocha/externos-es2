@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const paymentClient = require('./utils/paymentClient');
-const paymentRoutes = require('./routes/payment');
-const mailRoutes = require('./routes/mail');
-const databaseRoutes = require('./routes/database');
+const paymentClient = require('./middlewares/paymentClient');
+const paymentRoutes = require('./controllers/payment');
+const mailRoutes = require('./controllers/mail');
+const databaseRoutes = require('./controllers/database');
 const app = express();
 app.use(express.json());
 app.use(cors());
