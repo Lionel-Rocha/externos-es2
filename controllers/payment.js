@@ -24,7 +24,7 @@ router.post('/cobranca', async (req, res) => {
             }
         } catch (e) {
             if (e.message.includes("User not found")) {
-                return res.status(422).send("Invalid data: " + userId);
+                return res.status(422).send("Invalid data: user not found");
             }
             res.send(500).send("Internal Server Error: " + e.message);
         }
