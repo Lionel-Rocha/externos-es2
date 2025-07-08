@@ -28,10 +28,16 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Verify coverage
+        run: ls -lh coverage && head -n 10 coverage/lcov.info
+
       - name: SonarQubeScan
-        uses: SonarSource/sonarqube-scan-action@v3
+        uses: SonarSource/sonarqube-scan-action@v4
         with:
           extra-args: >
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-        env: 
+        env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
