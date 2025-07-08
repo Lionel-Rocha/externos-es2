@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js --require-module ts-node/register \"test/feature/**/*.feature\""
-  },
+    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js \"test/feature/**/*.feature\""  },
   "nyc": {
     "extension": [
       ".js"
