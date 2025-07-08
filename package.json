@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js --require-module ts-node/register features/**/*.feature"
+    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js --require-module ts-node/register \"features/**/*.feature\""
   },
   "nyc": {
-    "extension": [".js"],
-    "exclude": ["tests/**", "node_modules/**"],
+    "extension": [
+      ".js"
+    ],
+    "exclude": [
+      "tests/**",
+      "node_modules/**"
+    ],
     "report-dir": "./coverage"
   },
   "private": true,
@@ -24,5 +29,8 @@
     "nodemailer": "^7.0.3",
     "resend": "^4.6.0",
     "supertest": "^7.1.1"
+  },
+  "devDependencies": {
+    "nyc": "^17.1.0"
   }
 }
