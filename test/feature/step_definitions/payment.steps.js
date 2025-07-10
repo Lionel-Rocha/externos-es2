@@ -52,8 +52,8 @@ When('a função de cobrança é erroneamente chamada com userId {string} e amou
 });
 
 Then('deve retornar um erro informando que o valor da cobrança é inválido', function () {
-    let error = this.response;
-    assert.equal(error, 'Error: Error creating bills: The requested action could not be performed, semantically incorrect, or failed business validation.');
+    let error = this.response.message;
+    assert.equal(error, 'Error creating bills: The requested action could not be performed, semantically incorrect, or failed business validation.');
 });
 
 Then('deve retornar um erro informando que o usuário não foi encontrado', function () {

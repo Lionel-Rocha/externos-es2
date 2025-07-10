@@ -65,7 +65,7 @@ async function createBill(userId, amount, requestedTime){
 
     const data = await response.json();
 
-    if (!response.ok) throw new Error(`Error creating bills: ${data}`);
+    if (!response.ok) throw new Error(`Error creating bills: ${data.message}`);
 
     const bills = loadBills();
     if (!bills[userId]) bills[userId] = [];

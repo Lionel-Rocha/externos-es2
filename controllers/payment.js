@@ -54,6 +54,7 @@ router.post('/filaCobranca', async (req, res) => {
 
     try {
         await paymentMethods.createBill(userId, value, requestedTime);
+        return res.status(200).send('Bill enqueued successfully!');
     } catch (e) {
         return res.status(500).send("Internal Server Error: " + e.message);
     }
