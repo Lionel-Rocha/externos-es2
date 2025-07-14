@@ -4,20 +4,23 @@ const mailUtils = require("../services/mail");
 
 // Rota para enviar um email. Pode ser que não funcione.
 router.post('/enviarEmail', async (req, res) => {
-    const { email, subject, body } = req.body;
+    const { email, assunto, mensagem } = req.body;
 
-    if (!email || !subject || !body) {
-        return res.status(400).send("Email, subject and body are required.");
+    if (!email || !assunto || !mensagem) {
+        return res.status(400).send("Email, assunto e corpo são necessários.");
     }
 
     try {
-
-        const info = await mailUtils.sendMail(email, subject, body);
-        res.status(200).send(`Email sent successfully: ${info}`);
+        const info = await mailUtils.sendMail(email, assunto, mensagem);
+        res.status(200).send(`Email enviado com sucesso: ${info}`);
     } catch (error) {
-        //faltou o check de erro 422
-        res.status(500).json({
-            message: error.message
+        if (error.message === "Invalid email address: " + email) {
+            return res.status(422).json({
+                message: "Email com formato inválido."
+            });
+        }
+        res.status(404).json({
+            message: "Email não existe."
         });
     }
 });
