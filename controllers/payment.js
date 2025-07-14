@@ -10,21 +10,21 @@ const paymentMethods = require("../services/paymentMethods");
 //esse treco demora um pouco, porque tem duas coisas acontecendo aqui: a criação da cobrança
 //(no paypal) e o pagamento (no paypal)
 router.post('/cobranca', async (req, res) => {
-    let {value, userId} = req.body;
+    let {valor, ciclista} = req.body;
     const now = new Date();
     const requestedTime = now.toLocaleString('pt-BR');
 
     try{
-        await paymentMethods.createBill(userId, value, requestedTime);
+        await paymentMethods.createBill(ciclista, valor, requestedTime);
         try {
-            let payment = await paymentMethods.payBill(userId);
+            let payment = await paymentMethods.payBill(ciclista);
             if (!payment) {
                 //não faz nada; a bill continua "PENDING"
                 res.send(500).send("Pending bill.");
             }
         } catch (e) {
             if (e.message.includes("User not found")) {
-                return res.status(422).send("Invalid data: user not found");
+                return res.status(422).send("Dados inválidos.");
             }
             res.send(500).send("Internal Server Error: " + e.message);
         }
@@ -32,7 +32,7 @@ router.post('/cobranca', async (req, res) => {
         return res.status(500).send("Internal Server Error: " + e.message);
     }
 
-    res.status(200).send("Bill paid successfully!");
+    res.status(200).send("Cobrança solicitada");
 
 });
 
@@ -42,19 +42,19 @@ router.post('/processaCobrancasEmFila', async (req, res) => {
     } catch (e) {
         res.status(500).send("Internal Server Error: " + e.message);
     }
-    res.status(200).send("All bills were processed.");
+    res.status(200).send("Processamento concluído com sucesso");
 
 
 });
 
 router.post('/filaCobranca', async (req, res) => {
-    let {value, userId} = req.body;
+    let {valor, ciclista} = req.body;
     const now = new Date();
     const requestedTime = now.toLocaleString('pt-BR');
 
     try {
-        await paymentMethods.createBill(userId, value, requestedTime);
-        return res.status(200).send('Bill enqueued successfully!');
+        await paymentMethods.createBill(valor, ciclista, requestedTime);
+        return res.status(200).send('Cobrança Incluida');
     } catch (e) {
         return res.status(500).send("Internal Server Error: " + e.message);
     }
@@ -68,7 +68,7 @@ router.get('/cobranca/:billId', async (req, res) => {
         res.status(200).json(bill);
     } catch (error) {
         if (error.message === "Bill not found") {
-            return res.status(404).send("Bill not found.");
+            return res.status(404).send("Não encontrado.");
         }
         res.status(500).send("Internal Server Error: " + error.message);
     }
