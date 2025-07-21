@@ -41,7 +41,6 @@ async function createBill(userId, amount, requestedTime){
 
     const accessToken = await obterToken();
 
-
     const user = userData.users.find(u => u.userId === userId);
     if (!user) throw new Error("User not found");
 

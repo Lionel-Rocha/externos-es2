@@ -14,10 +14,12 @@ router.post('/cobranca', async (req, res) => {
     const now = new Date();
     const requestedTime = now.toLocaleString('pt-BR');
 
+    let payment;
+    let bill;
     try{
-        await paymentMethods.createBill(ciclista, valor, requestedTime);
+        bill = await paymentMethods.createBill(ciclista, valor, requestedTime);
         try {
-            let payment = await paymentMethods.payBill(ciclista);
+            payment = await paymentMethods.payBill(ciclista);
             if (!payment) {
                 //não faz nada; a bill continua "PENDING"
                 res.send(500).send("Pending bill.");
@@ -32,7 +34,17 @@ router.post('/cobranca', async (req, res) => {
         return res.status(500).send("Internal Server Error: " + e.message);
     }
 
-    res.status(200).send("Cobrança solicitada");
+    const endTime = now.toLocaleString('pt-BR', );
+
+    res.status(200).send( {
+        message: "Cobrança solicitada",
+        valor: valor,
+        ciclista: ciclista,
+        horaSolicitacao: bill.requestedTime,
+        horaFinalizacao: endTime,
+        id: bill.orderId,
+        status: payment.status || "PENDING"
+    });
 
 });
 
@@ -53,7 +65,7 @@ router.post('/filaCobranca', async (req, res) => {
     const requestedTime = now.toLocaleString('pt-BR');
 
     try {
-        await paymentMethods.createBill(valor, ciclista, requestedTime);
+        await paymentMethods.createBill(ciclista, valor, requestedTime);
         return res.status(200).send('Cobrança Incluida');
     } catch (e) {
         return res.status(500).send("Internal Server Error: " + e.message);
@@ -73,6 +85,8 @@ router.get('/cobranca/:billId', async (req, res) => {
         res.status(500).send("Internal Server Error: " + error.message);
     }
 });
+
+
 
 module.exports = router;
 
