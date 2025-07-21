@@ -65,8 +65,18 @@ router.post('/filaCobranca', async (req, res) => {
     const requestedTime = now.toLocaleString('pt-BR');
 
     try {
-        await paymentMethods.createBill(ciclista, valor, requestedTime);
-        return res.status(200).send('Cobrança Incluida');
+        let bill = await paymentMethods.createBill(ciclista, valor, requestedTime);
+        const endTime = now.toLocaleString('pt-BR', );
+
+        return res.status(200).send( {
+            message: "Cobrança solicitada",
+            valor: valor,
+            ciclista: ciclista,
+            horaSolicitacao: bill.requestedTime,
+            horaFinalizacao: endTime,
+            id: bill.orderId,
+            status: bill.status
+        });
     } catch (e) {
         return res.status(500).send("Internal Server Error: " + e.message);
     }
