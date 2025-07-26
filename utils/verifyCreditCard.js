@@ -3,7 +3,7 @@ const {obterToken} = require("../middlewares/paymentClient");
 const fetch = require("node-fetch");
 const crypto = require("crypto");
 
-async function verifyCreditCard(cardNumber,expiry,cvv) {
+async function verifyCreditCard(cardNumber,name, expiry,cvv) {
     const accessToken = await obterToken();
     let amount = 1; //1 real
 
@@ -39,8 +39,7 @@ async function verifyCreditCard(cardNumber,expiry,cvv) {
                     number: cardNumber,
                     expiry: expiry,
                     security_code: cvv,
-                    name: "JOHN DOE" //john doe seria nosso joão da silva? sinceramente, não muda nada
-                    //então vou deixar john doe.
+                    name: name
                 }
             }
         })
