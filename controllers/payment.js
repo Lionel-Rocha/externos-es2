@@ -19,7 +19,7 @@ router.post('/cobranca', async (req, res) => {
     try{
         bill = await paymentMethods.createBill(ciclista, valor, requestedTime);
         try {
-            payment = await paymentMethods.payBill(ciclista);
+            payment = await paymentMethods.payBillPorOrderId(bill.userId, bill.orderId);
             if (!payment) {
                 //não faz nada; a bill continua "PENDING"
                 res.send(500).send("Pending bill.");
@@ -28,13 +28,17 @@ router.post('/cobranca', async (req, res) => {
             if (e.message.includes("User not found")) {
                 return res.status(422).send("Dados inválidos.");
             }
-            res.send(500).send("Internal Server Error: " + e.message);
+            console.log(e);
+            // res.send(500).send("Internal Server Error: " + e.message);
         }
     } catch(e){
-        return res.status(500).send("Internal Server Error: " + e.message);
+        console.log(e);
+        // return res.status(500).send("Internal Server Error: " + e.message);
     }
 
     const endTime = now.toLocaleString('pt-BR', );
+
+    console.log(payment);
 
     res.status(200).send( {
         message: "Cobrança solicitada",
@@ -54,7 +58,7 @@ router.post('/processaCobrancasEmFila', async (req, res) => {
     } catch (e) {
         res.status(500).send("Internal Server Error: " + e.message);
     }
-    res.status(200).send("Processamento concluído com sucesso");
+     res.status(200).send("Processamento concluído com sucesso");
 
 
 });

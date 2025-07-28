@@ -17,6 +17,8 @@ app.use('/email', mailRoutes);
 app.use('/payment', paymentRoutes);
 
 app.use('/database', databaseRoutes);
+
+app.use('/verifyCard', require('./controllers/verifyCard'));
 app.listen(3000, () => {
     paymentClient.client();
     console.log('Servidor rodando na porta 3000');

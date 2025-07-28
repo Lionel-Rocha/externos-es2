@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js \"test/feature/**/*.feature\""  },
+    "test:coverage": "nyc --reporter=lcov --reporter=text cucumber-js \"test/feature/**/*.feature\""
+  },
   "nyc": {
     "extension": [
       ".js"
@@ -26,6 +27,7 @@
     "express": "^5.1.0",
     "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.3",
+    "pg": "^8.16.3",
     "resend": "^4.6.0",
     "supertest": "^7.1.1"
   },
